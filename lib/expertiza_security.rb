@@ -93,8 +93,6 @@ module ExpertizaSecurity
           self.salt = KeyManagement.generate_salt if self.has_attribute?(:salt) && (!self.salt || self.new_record?)
           @crypt = Crypt.new(KeyManagement.key_encryption_key, self.salt)
           self.data_encryption_key = @crypt.encrypt(KeyManagement.generate_data_encryption_key) if self.has_attribute?(:data_encryption_key)  && (!self.data_encryption_key || self.new_record?)
-          self.user_id = CurrentUser.id if self.has_attribute?(:user_id) && CurrentUser.id && self.new_record?
-          self.organization_id = CurrentUser.organization_id if self.has_attribute?(:organization_id) && CurrentUser.organization_id && self.new_record? && !self.skip_auto_organization_id?
         end
 
         @salt = self.has_attribute?(:salt) ? self.salt ||= KeyManagement.salt : KeyManagement.salt if self.is_encrypted? || self.is_hashed?

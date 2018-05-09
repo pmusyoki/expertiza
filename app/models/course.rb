@@ -1,4 +1,8 @@
+require 'expertiza_security'
+
 class Course < ActiveRecord::Base
+  include ExpertizaSecurity::Security
+
   has_many :ta_mappings, dependent: :destroy
   has_many :tas, through: :ta_mappings
   has_many :assignments, dependent: :destroy
@@ -8,6 +12,8 @@ class Course < ActiveRecord::Base
   has_many :course_teams, foreign_key: 'parent_id', dependent: :destroy
   has_one :course_node, foreign_key: "node_object_id", dependent: :destroy
   has_paper_trail
+  attr_encrypted :name
+
   validates_presence_of :name
   # Return any predefined teams associated with this course
   # Author: ajbudlon
